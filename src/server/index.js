@@ -2,9 +2,14 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import http from 'http'
+
+// Utilities
+import { sendResponse } from '../utils/utils.js';
+
+// Socket
+import { setupSocket } from '../socket/socketConnections.js';
 import { Server as SocketServer } from 'socket.io'
 import { instrument } from '@socket.io/admin-ui';
-
 
 // Routes
 import { routerAuth } from '../routes/auth.js';
@@ -12,7 +17,8 @@ import { routerUsers } from '../routes/users.js';
 import { routerProfiles } from '../routes/profiles.js';
 import { routerRooms } from '../routes/rooms.js';
 import { routerEmail } from '../routes/email.js';
-import { setupSocket } from '../scoket/socketConnections.js';
+
+
 
 
 class Server {
@@ -82,7 +88,7 @@ class Server {
 
     // Error 404
     this.app.use('*', (req, res) => {
-      res.status(400).json({ message: 'Endpoint no encontrado' });
+      sendResponse(res, 400, true, 'Endpoint no encontrado');
     });
 
   }

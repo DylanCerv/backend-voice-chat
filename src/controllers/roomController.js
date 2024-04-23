@@ -1,33 +1,62 @@
 import { Profile } from "../models/profile.js";
 import { Room } from "../models/room.js";
 import { SubRoom } from "../models/subRoom.js";
+import { sendResponse } from "../utils/utils.js";
 
 export class RoomController {
 
 
     /**
-     * Create a room
+     * Create a room (Guarda una sala)
      */
-    // POST /api/rooms
+    // POST /api/salas
     static async createRoom(req, res) {
         try {
             const userId = req.user.userId;
-            const { name } = req.body;
+            const { hash } = req.body;
 
-            const room = new Room({userId, name});
-            await room.save();
+            // Verificar si el usuario tiene una sala registrada
+            const existingRoom = await Room.findOne({ userId });
+            if (existingRoom) {
+                // Si existe la sala actualizala
+                await Room.findOneAndUpdate({ userId }, { hash }, { new: true });
+            }else {
+                // Crear la sala si no existe
+                const room = new Room({userId, hash});
+                await room.save();
+            }
 
-            res.status(201).json({ message: 'Sala creada correctamente', data: room });
+            return sendResponse(res, 201, false, 'Sala creada correctamente');
         } catch (error) {
             console.error('Error al crear la sala:', error);
-            res.status(500).json({ error: 'Error al crear la sala' });
+            sendResponse(res, 500, true, 'Error al crear la sala');
+        }
+    }
+
+    /**
+     * Obtener la sala del usuario
+     */
+    // GET /api/salas
+    static async getRoom(req, res) {
+        try {
+            const userId = req.user.userId;
+
+            const room = await Room.findOne({ userId });
+            if (!room) {
+                return sendResponse(res, 400, true, 'El usuario no tiene una sala');
+            }
+
+            return sendResponse(res, 200, false, 'Sala del usuario obtenida correctamente', null, room);
+        } catch (error) {
+            console.error('Error al obtener la sala del usaurio: ', error);
+            return sendResponse(res, 500, true, 'Error al obtener la sala del usaurio');
         }
     }
 
     /**
      * Delete a room
      */
-    // DELETE /api/rooms/:id
+    // DELETE /api/salas/:id
     static async deleteRoom(req, res) {
         try {
             const roomId = req.params.id;
@@ -42,7 +71,7 @@ export class RoomController {
     /**
      * Create a SubRoom
      */
-    // POST /api/rooms/:id
+    // POST /api/salas/:id
     static async createSubRoom(req, res) {
         try {
             const userId = req.user.userId;
@@ -77,7 +106,7 @@ export class RoomController {
     /**
      * Delete a SubRoom
      */
-    // DELETE /api/rooms/:id/:subRoomId
+    // DELETE /api/salas/:id/:subRoomId
     static async deleteSubRoom(req, res) {
         try {
             const {id, subRoomId} = req.params;

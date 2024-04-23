@@ -7,7 +7,7 @@ const roomSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    name: {
+    hash: {
         type: String,
         required: true
     },

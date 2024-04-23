@@ -6,26 +6,14 @@ const profileSchema = new mongoose.Schema({
       ref: 'User',
       required: true
     },
-    name: {
-      type: String,
-      required: true,
-      maxlength: 150
-    },
-    lastname: {
-      type: String,
-      maxlength: 150
-    },
-    phone: {
-      type: String,
-      maxlength: 150
-    },
-    nickname: {
+    username: {
       type: String,
       required: true,
       maxlength: 150
     },
     glb: {
       type: String,
+      required: true,
       maxlength: 20
     },
     createdAt: {

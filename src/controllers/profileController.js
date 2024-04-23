@@ -1,4 +1,5 @@
 import { Profile } from "../models/profile.js";
+import { sendResponse } from "../utils/utils.js";
 
 
 export class ProfileController {
@@ -13,13 +14,13 @@ export class ProfileController {
 
             const profile = await Profile.findOne({ userId });
             if (!profile) {
-                return res.status(404).json({ error: 'Perfil de usuario no encontrado' });
+                return sendResponse(res, 400, true, 'Perfil de usuario no encontrado');
             }
 
-            res.status(200).json({ message: 'Perfil de usuario obtenido correctamente', profile });
+            return sendResponse(res, 200, false, 'Perfil de usuario obtenido correctamente', profile);
         } catch (error) {
-            console.error('Error al actualizar el perfil de usuario:', error);
-            res.status(500).json({ error: 'Error al actualizar el perfil de usuario' });
+            console.error('Error al obtener el perfil de usuario:', error);
+            return sendResponse(res, 500, true, 'Error al obtener el perfil de usuario');
         }
     }
 
@@ -30,19 +31,19 @@ export class ProfileController {
     static async updateProfile(req, res) {
         try {
             const userId = req.user.userId;
-            const { name, lastname, phone, nickname, glb } = req.body;
+            const { username, glb } = req.body;
 
             // Buscar y actualizar el perfil del usuario
-            const profile = await Profile.findOneAndUpdate({ userId }, { name, lastname, phone, nickname, glb }, { new: true });
+            const profileUpdated = await Profile.findOneAndUpdate({ userId }, { username, glb }, { new: true });
 
-            if (!profile) {
-                return res.status(404).json({ error: 'Perfil de usuario no encontrado' });
+            if (!profileUpdated) {
+                return sendResponse(res, 404, true, 'Perfil de usuario no encontrado');
             }
 
-            res.status(200).json({ message: 'Perfil de usuario actualizado correctamente', profile });
+            return sendResponse(res, 200, false, 'Perfil de usuario actualizado correctamente', profileUpdated);
         } catch (error) {
             console.error('Error al actualizar el perfil de usuario:', error);
-            res.status(500).json({ error: 'Error al actualizar el perfil de usuario' });
+            return sendResponse(res, 500, true, 'Error al actualizar el perfil de usuario');
         }
     }
 

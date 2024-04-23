@@ -10,6 +10,13 @@ routerRooms.post('/', [
     verifyTokenMiddleware
 ], RoomController.createRoom);
 
+routerRooms.get('/', [
+    verifyTokenMiddleware
+], RoomController.getRoom);
+
+
+
+
 routerRooms.delete('/:id', [
     verifyTokenMiddleware
 ], RoomController.deleteRoom);

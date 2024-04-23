@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { User } from '../models/user.js';
 import { Profile } from '../models/profile.js';
 import { signJWT } from '../utils/jwtHelper.js';
@@ -15,7 +14,7 @@ export class AuthController {
     // POST /api/auth/register
     static async register(req, res) {
         try {
-            const { email, password, name, lastname, phone, nickname, glb } = req.body;
+            const { email, password, username, glb } = req.body;
 
             // Validar la presencia de los campos requeridos
             const requiredFields = ['email', 'password'];
@@ -40,8 +39,9 @@ export class AuthController {
             const newUser = new User({ email, password: hashedPassword });
             await newUser.save();
 
-            // const newProfile = new Profile({userId: newUser._id, name, lastname, phone, nickname, glb });
-            // await newProfile.save();
+            // Registrar perfil del usuario
+            const newProfile = new Profile({userId: newUser._id, username, glb });
+            await newProfile.save();
 
             // Generar token de autenticación
             const token = signJWT({ userId: newUser._id });
@@ -49,7 +49,7 @@ export class AuthController {
             return sendResponse(res, 201, false, 'Registred', null, { token: token });
         } catch (error) {
             console.error('Error al registrar usuario:', error);
-            res.status(500).json({ error: 'Error al registrar usuario' });
+            return sendResponse(res, 500, true, 'Error al registrar usuario');
         }
     }
 

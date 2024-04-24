@@ -17,7 +17,7 @@ export class AuthController {
             const { email, password, username, glb } = req.body;
 
             // Validar la presencia de los campos requeridos
-            const requiredFields = ['email', 'password'];
+            const requiredFields = ['email', 'password', 'username', 'glb'];
             const missingFields = validateRequiredFields(req.body, requiredFields);
             if (missingFields.length > 0) {
                 return sendResponse(res, 400, true, `The fields are required: ${missingFields.join(', ')}`);

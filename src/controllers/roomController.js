@@ -45,8 +45,10 @@ export class RoomController {
             if (!room) {
                 return sendResponse(res, 400, true, 'El usuario no tiene una sala');
             }
+            
+            // console.log(room)
 
-            return sendResponse(res, 200, false, 'Sala del usuario obtenida correctamente', null, room);
+            sendResponse(res, 200, false, 'Sala del usuario obtenida correctamente', null, { room: room });
         } catch (error) {
             console.error('Error al obtener la sala del usaurio: ', error);
             return sendResponse(res, 500, true, 'Error al obtener la sala del usaurio');

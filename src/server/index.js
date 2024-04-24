@@ -34,7 +34,7 @@ class Server {
       auth: '/api/auth',
       users: '/api/users',
       rooms: '/api/salas',
-      profiles: '/api/profiles',
+      profiles: '/api/profile',
       emails: '/api/emails',
     }
 

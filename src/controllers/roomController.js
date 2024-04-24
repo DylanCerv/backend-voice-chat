@@ -43,10 +43,11 @@ export class RoomController {
 
             const room = await Room.findOne({ userId });
             if (!room) {
-                return sendResponse(res, 400, true, 'El usuario no tiene una sala');
+                return sendResponse(res, 404, true, 'El usuario no tiene una sala');
             }
-            
-            // console.log(room)
+
+            // Eliminar sala obtenida
+            const detelRoom = await Room.findByIdAndDelete(room._id);
 
             sendResponse(res, 200, false, 'Sala del usuario obtenida correctamente', null, { room: room });
         } catch (error) {

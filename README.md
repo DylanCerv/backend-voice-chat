@@ -1,8 +1,14 @@
-# Backend Chat Voz
+# Backend VoiceChat
 
 - Se esta usando MongoDB Atlas para base de datos.
-- En la carpeta EP-json, se encuentra un .json de los endpoints creados
 
 Para correr el proyecto se debe seguir los siguientes pasos:
 - Instalar las librerias necesarias ``npm i``
 - Correr el proyecto en local usando nodemon ``npm run dev``
+
+
+
+### Informacion del desarrollador
+- Correo: dylanecervantes@gmail.com
+- Telefono: +593 997237902
+- LinkedIn: https://www.linkedin.com/in/dylan-espana/

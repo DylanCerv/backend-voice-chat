@@ -65,7 +65,7 @@ class Server {
       cors({
         allowedHeaders: ["authorization", "Content-Type"], // you can change the headers
         exposedHeaders: ["authorization"], // you can change the headers
-        origin: ["*", "http://localhost:5173"],
+        origin: ["*", "http://localhost:5173", "http://localhost:4173"],
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
         preflightContinue: false
       })
